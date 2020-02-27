@@ -1,0 +1,23 @@
+---
+service: select-transform-serverless
+provider:
+  name: aws
+  stackName: 'stjs-serverless'
+  runtime: nodejs12.x
+  stage: dev
+  region: us-west-2
+  memorySize: 128
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:GetObject'
+        - 's3:PutObject'
+      Resource: 'arn:aws:s3:::seltrans-bucket/*'
+functions:
+  app:
+    handler: server.handler
+    events:
+      - http:
+          path: /
+          method: POST
+          cors: true

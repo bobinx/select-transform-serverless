@@ -1,0 +1,13 @@
+{
+  "data": {
+    "items": [1, 2, 3, 100, 10, 19]
+  },
+  "template": {
+    "labels": {
+      "{{#each items}}": {
+        "text": "{{this}}",
+        "type": "label"
+      }
+    }
+  }
+}
