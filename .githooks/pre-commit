@@ -1,0 +1,25 @@
+# pre-push hook to prompt confirmation before pushing to master
+# original source: https://gist.github.com/mosra/19abea23cdf6b82ce891c9410612e7e1
+# ref: https://gist.github.com/ColCh/9d48693276aac50cac37a9fce23f9bda
+# ref: https://ghost.org/changelog/prevent-master-push/
+
+
+#!/bin/bash
+
+protected_branch='master'
+
+# Argument parsing taken from .git/hooks/pre-push.sample
+if read local_ref local_sha remote_ref remote_sha; then
+    if [[ "$remote_ref" == *"$protected_branch"* ]]; then
+        echo -en "\033[1;33mYou're about to push to master, is that what you intended? [y|n] \033[0m"
+        echo -en "\033[1m"
+        read -n 1 -r < /dev/tty
+        echo -en "\033[0m"
+
+        echo
+        if echo $REPLY | grep -E '^[Yy]$' > /dev/null; then
+            exit 0 # push will execute
+        fi
+        exit 1 # push will not execute
+    fi
+fi
